@@ -23,7 +23,25 @@ A pico 32bit RISC-V core
 - find next coroutine to execute
 - restore context
 *** save context
-*** find next
+**** what
+- register: all callee saved register in ABI need to save
+- stack: not save, just use different stack for different coroutine
+
+| name    | ABI Mnemonic | Meaning                | Preserved across calls? |
+|---------+--------------+------------------------+-------------------------|
+| x0      | zero         | zero                   | - (immutable)           |
+| x1      | ra           | return address         | no                      |
+| x2      | sp           | stack pointer          | yes                     |
+| x3      | gp           | global pointer         | - (unallocatable)       |
+| x4      | tp           | thread pointer         | - (unallocatable)       |
+| x5-x7   | t0-t2        | temporary registers    | no                      |
+| x8-x9   | s0-s1        | callee-saved registers | yes                     |
+| x10-x17 | a0-a7        | argument registers     | no                      |
+| x18-x27 | s2-s11       | callee-saved registers | yes                     |
+| x28-x31 | t3-t3        | temporary registers    | no                      |
+**** where
+
+*** find next task
 *** restore context
 *** actual implementation
 #+begin_src c
@@ -35,3 +53,4 @@ A pico 32bit RISC-V core
 ** single task example
 ** 3 task example
 * reference
+- https://github.com/riscv-non-isa/riscv-elf-psabi-doc/blob/master/riscv-cc.adoc

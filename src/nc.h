@@ -12,7 +12,7 @@ typedef struct _nc_ctx_t {
     uintptr_t ra_new;
 } nc_ctx_t;
 
-typedef void (*nc_func_t)(void *data);
+typedef void (*nc_func_t)();
 
 void nc_yield();
 void nc_new(nc_func_t func, nc_ctx_t *ctx, uintptr_t *stack_top);

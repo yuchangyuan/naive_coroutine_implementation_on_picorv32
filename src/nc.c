@@ -15,9 +15,9 @@ void __attribute__((naked)) nc_yield()
         // copy sp to t0
         "mv t0, sp\n\t"
 
-        // load *_curr to sp
+        // load _curr to sp
         "lw sp, _curr\n\t"
-        "lw sp, (sp)\n\t"
+        //"lw sp, (sp)\n\t"
 
         // save ra & sp to _curr->ra_old & _curr->sp_old
         "sw ra,  4(sp)\n\t"
@@ -44,7 +44,7 @@ void __attribute__((naked)) nc_yield()
     // find next & update _curr
     __asm__ volatile(
         "lw t0, (sp)\n\t" // load _next to t0
-        "lw sp, _curr\n\t" // load _curr addr to sp
+        "la sp, _curr\n\t" // load _curr addr to sp
         "sw t0, (sp)\n\t"
         "mv sp, t0\n\t"
         ); // update sp to new _curr

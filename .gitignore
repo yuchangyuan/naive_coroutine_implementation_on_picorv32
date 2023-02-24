@@ -1,0 +1,9 @@
+*.o
+*.elf
+*.sim
+rom_gen
+*.bin
+*.v
+*.tb
+*.vcd
+*.list

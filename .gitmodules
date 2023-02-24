@@ -1,0 +1,3 @@
+[submodule "run_c_snippet_on_picorv32"]
+	path = run_c_snippet_on_picorv32
+	url = ../run_c_snippet_on_picorv32

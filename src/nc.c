@@ -37,8 +37,8 @@ void __attribute__((naked)) nc_yield()
         "sw s10, 52(sp)\n\t"
         "sw s11, 56(sp)\n\t"
 
-        // also save ra to _curr->ra_new
-        "sw ra, 60(sp)\n\t"
+        // no need to save ra to _curr->ra_new
+        // "sw ra, 60(sp)\n\t"
         );
 
     // find next & update _curr

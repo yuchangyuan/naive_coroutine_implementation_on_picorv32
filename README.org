@@ -1,22 +1,22 @@
-#+title: A naive corotine implementation on picorv32
+#+title: A naive coroutine implementation on picorv32
 #+author: Yù Chāngyuǎn
 
 # use large font, run below command with C-x C-e
 # (set-frame-font "Ubuntu Mono-48")
 
 * intro
-** corotine
+** coroutine
 - a switchable task
 - need manually switch
 ** picorv32
 A pico 32bit RISC-V core
-* corotine API
+* coroutine API
 ** what we need
-- init/create a corotine
-  + for main function, we init as 1st exist corotine
-  + for other corotine, we need to create
+- init/create a coroutine
+  + for main function, we init as 1st exist coroutine
+  + for other coroutine, we need to create
 - switch context: yield
-- exit corotine
+- exit coroutine
 ** switch context: implementation of yield function
 *** 3 step
 - save context

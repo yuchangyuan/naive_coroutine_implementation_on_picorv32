@@ -22,8 +22,7 @@ A pico 32bit RISC-V core
 - save context
 - find next coroutine to execute
 - restore context
-*** save context
-**** what
+*** save context: what
 - register: all callee saved register in ABI need to save
 - stack: not save, just use different stack for different coroutine
 
@@ -40,7 +39,7 @@ A pico 32bit RISC-V core
 | x18-x27 | s2-s11       | callee-saved registers | yes                     |
 | x28-x31 | t3-t3        | temporary registers    | no                      |
 
-**** where
+*** save context: where
 global variable
 
 #+begin_src c

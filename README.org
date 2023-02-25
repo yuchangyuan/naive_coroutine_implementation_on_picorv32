@@ -23,7 +23,7 @@ A pico 32bit RISC-V core
 - find next coroutine to execute
 - restore context
 *** save context: what
-- register: all callee saved register in ABI need to save
+- register: all callee saved register in ABI need to save, besides return address ~ra~
 - stack: not save, just use different stack for different coroutine
 
 | name    | ABI Mnemonic | Meaning                | Preserved across calls? |

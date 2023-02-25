@@ -1,11 +1,11 @@
 #include "nc.h"
 
-// context for main corotine
+// context for main coroutine
 static nc_ctx_t _main_ctx = {
     .next = &_main_ctx,
 };
 
-// current corotine
+// current coroutine
 nc_ctx_t *_curr = &_main_ctx;
 
 void __attribute__((naked)) nc_yield()
@@ -17,7 +17,6 @@ void __attribute__((naked)) nc_yield()
 
         // load _curr to sp
         "lw sp, _curr\n\t"
-        //"lw sp, (sp)\n\t"
 
         // save ra & sp to _curr->ra_old & _curr->sp_old
         "sw ra,  4(sp)\n\t"
@@ -75,7 +74,7 @@ void __attribute__((naked)) nc_yield()
         );
 }
 
-void finalize()
+static void finalize()
 {
     // find prev ctx
     nc_ctx_t *ctx = _curr;
@@ -87,7 +86,7 @@ void finalize()
     // skip _curr
     ctx->next = _curr->next;
 
-    // switch to next corotine, bye
+    // switch to next coroutine, bye
     nc_yield();
 }
 

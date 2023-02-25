@@ -61,10 +61,14 @@ global variable
       uintptr_t sp;
       uintptr_t s[12];
   } nc_ctx_t;
+
+  nc_ctx_t *_curr;
 #+end_src
 *** restore context
 - restore ~ra~, ~sp~ & ~s[12]~ from new ~_curr~
 - jump to address ~ra~, with instruction ~ret~
+  + alternative: restore ~_curr->ra~ to other reg, then jump
+
 *** implementation
 ~nc_yield~
 
@@ -72,8 +76,8 @@ global variable
 - need some special handling, see next sections
 ** init/create a coroutine
 *** init, for main coroutine
-- define a static context: _main_ctx
-- init _main_ctx, point _main_ctx.next to self
+- define a static context: ~_main_ctx~
+- init ~_main_ctx~, point ~_main_ctx.next~ to self
 - set init value of ~_curr~
 
 #+begin_src c
@@ -84,18 +88,20 @@ global variable
   nc_ctx_t *_curr = &_main_ctx;
 #+end_src
 *** create a coroutine: ~nc_new~
-**** argument
-- function pointer as main body of new coroutine: ~func~
-- context variable, a pointer global/static variable: ~ctx~
-- pointer to stack top: ~stack_top~
-**** context init
-***** what
-- view of ~nc_yield~, which call from other coroutine to switch to ~ctx
-  + as if a previous ~nc_yield~ is called just before begin of ~func~
-- view of ~func~, which jump from ~nc_yield~ call by previous coroutine
-  + as regular call to ~func~ by parent function
+*** ~nc_new~: 3 arguments
+- ~func~: function pointer as main body of new coroutine
+- ~ctx~: context variable, a pointer global/static variable
+- ~stack_top~: pointer to stack top
+*** ~nc_new~: 2 views
+- *caller*: view of ~nc_yield~,
+  + which called from other coroutine to switch to ~ctx~
+  + as if a previous ~nc_yield~ is called just before the beginning of ~func~
+- *callee*: view of ~func~
+  + which jump from ~nc_yield~ called by previous coroutine
+  + as regular call to ~func~ by caller function
+*** ~nc_new~: how
+review the last step of ~nc_yield~
 
-***** how
 - set ~sp~ of context to ~stack_top~
 - set ~ra~ of context to ~func~
 - add this context as next element of coroutine list
@@ -110,13 +116,14 @@ global variable
 #+end_src
 ** exit coroutine
 *** what happen when coroutine function return?
-jump to initial value of ~ra~ at beginning of coroutine function
+- jump to initial value of ~ra~ at beginning of coroutine function
+- which point to beginning of coroutine function
 
 *** special handle ~ra~
 + old ~ra~ for target address when exit from ~nc_yield~
 + new ~ra~ for actual value that ~ra~ register should restore
 
-+ setup new ~ra~ for initial context, to special where to jump when coroutine exit
++ setup new ~ra~ when initial context, to specify where to jump when coroutine exit
 + set old ~ra~ to the beginning of coroutine function
 
 #+begin_src c
@@ -132,7 +139,7 @@ typedef struct _nc_ctx_t {
 
 *** finalize function
 - set finalize function to ~ra_new~ when create coroutine
-- remove current coroutine from linked list
+- remove current coroutine context from linked list
 ** full implementation
 - file:./src/nc.h
 - file:./src/nc.c

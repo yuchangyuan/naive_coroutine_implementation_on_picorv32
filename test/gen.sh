@@ -16,7 +16,7 @@ RUNCSOP=../run_c_snippet_on_picorv32
 # 2. default NixOS cross compiler not support 'rv32imc', so here use 'rv32imdc'
 # 3. all test code contain will not emmit instruction in 'D' extension, so wrong march is harmless
 $CC -march=rv32imdc -I../src -Os -c ${T}.c ../src/nc.c $RUNCSOP/sw/init.c $RUNCSOP/sw/start.S
-$CC -march=rv32imdc -nostartfiles ${T}.o init.o start.o nc.o -lm -lgcc -Wl,-T,$RUNCSOP/sw/s3.lds -o ${T}.elf
+$CC -march=rv32imdc -nostartfiles ${T}.o init.o start.o nc.o -Wl,-T,$RUNCSOP/sw/s3.lds -o ${T}.elf
 
 # dump list
 $OBJDUMP -D ${T}.elf > ${T}.list

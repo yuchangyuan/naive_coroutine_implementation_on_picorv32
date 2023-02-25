@@ -100,7 +100,7 @@ global variable
 - set ~sp~ of context to ~stack_top~
 - set ~ra~ of context to ~func~
 - add this context as next element of coroutine list
-- ~ra~ should special handle, see next section
+- ~ra~ need special handle, see next section
 
 #+begin_src c
   ctx->sp = (uintptr_t)stack_top;

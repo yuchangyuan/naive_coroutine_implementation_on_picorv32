@@ -37,7 +37,7 @@ A pico 32bit RISC-V core
 | x8-x9   | s0-s1        | callee-saved registers | yes                     |
 | x10-x17 | a0-a7        | argument registers     | no                      |
 | x18-x27 | s2-s11       | callee-saved registers | yes                     |
-| x28-x31 | t3-t3        | temporary registers    | no                      |
+| x28-x31 | t3-t6        | temporary registers    | no                      |
 
 *** save context: where
 global variable
